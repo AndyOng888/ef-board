@@ -1,11 +1,11 @@
 {
-  "generated": "01 Oct 2026, 01:53",
+  "generated": "01 Oct 2026, 03:18",
   "tasks": [
     {
       "uid": "EFS-013",
       "title": "In-house promoter reporting + GPS attendance (replace TimeTec)",
       "status": "active",
-      "next": "Live: hourly 10:00-22:00 scheduled. Public supervisor report at ef-board/report-1a0aa3412453 (masked). Next: watch the first real run - receipt verification is untested live",
+      "next": "Phase 1 LIVE and proven end to end (10/10 receipts verified). Runs every 15 min 10:00-22:00, verifies at 23:00, catches up missed days. Next: the 6 commission questions + outlet GPS list, then build our own clock-in",
       "files": "promoter-system/",
       "done": 0,
       "total": 0
