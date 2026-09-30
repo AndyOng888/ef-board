@@ -1,0 +1,122 @@
+{
+  "generated": "01 Oct 2026, 01:01",
+  "tasks": [
+    {
+      "uid": "EFS-013",
+      "title": "In-house promoter reporting + GPS attendance (replace TimeTec)",
+      "status": "active",
+      "next": "Pipeline built and dry-run on real data (27 tests, 43/43 sale lines parse). Video repeat-check + media auto-delete added. Next: first live run today, then pick a schedule",
+      "files": "promoter-system/",
+      "done": 0,
+      "total": 0
+    },
+    {
+      "uid": "EFS-007",
+      "title": "AI presenters (Mei, Aina, Chef Wei)",
+      "status": "waiting",
+      "next": "Character bibles + prompts + scripts written. Next: you generate Mei's base portrait",
+      "files": "ai-presenters/",
+      "done": 0,
+      "total": 0
+    },
+    {
+      "uid": "EFS-008",
+      "title": "Local AI setup on the 5060 Ti PC",
+      "status": "waiting",
+      "next": "Plan written. Next: PC back from maintenance → install Claude Code there → tell me",
+      "files": "LOCAL-AI-SETUP-PACK.md",
+      "done": 0,
+      "total": 0
+    },
+    {
+      "uid": "EFS-011",
+      "title": "Fix disease claims in Shopee listings",
+      "status": "waiting",
+      "next": "Peach, blueberry, beancurd, millet, nut butter — see notes below",
+      "files": "",
+      "done": 0,
+      "total": 5
+    },
+    {
+      "uid": "EFS-010",
+      "title": "Refresh S21 review reel as reviews grow",
+      "status": "idle",
+      "next": "AvoPrep had 4 reviews (5.0★). Re-check listing in ~1 month",
+      "files": "avoprep/reels2.py id 21",
+      "done": 0,
+      "total": 0
+    },
+    {
+      "uid": "EFS-012",
+      "title": "Paperclip agent team",
+      "status": "idle",
+      "next": "Optional. Start with 2 agents (listing watcher on Haiku + content scout) after EFS-008",
+      "files": "",
+      "done": 0,
+      "total": 0
+    },
+    {
+      "uid": "EFS-001",
+      "title": "AvoPrep reels set 1 (10, follower growth)",
+      "status": "done",
+      "next": "Reworked: soak+rinse only, Malay slang, varied footage",
+      "files": "avoprep/reels-WM/",
+      "done": 10,
+      "total": 10
+    },
+    {
+      "uid": "EFS-002",
+      "title": "AvoPrep reels set 2 (13: sales, reviews, UGC)",
+      "status": "done",
+      "next": "Includes S21 real reviews + S22/S23 UGC style",
+      "files": "avoprep/reels_set2-WM/",
+      "done": 13,
+      "total": 13
+    },
+    {
+      "uid": "EFS-003",
+      "title": "Product videos for every Shopee listing (56)",
+      "status": "done",
+      "next": "All listings covered; Ocean Rise + Mouettes skipped (in sardine video)",
+      "files": "fruits/videos-WM/",
+      "done": 56,
+      "total": 56
+    },
+    {
+      "uid": "EFS-004",
+      "title": "Captions for every video",
+      "status": "done",
+      "next": "Master sheet, all 56 + AvoPrep + older videos",
+      "files": "CAPTIONS-ALL.md",
+      "done": 0,
+      "total": 0
+    },
+    {
+      "uid": "EFS-005",
+      "title": "WhatsApp zips",
+      "status": "done",
+      "next": "1 full (102MB) + 2 parts (50/53MB) on Desktop",
+      "files": "Desktop EFStore-*.zip",
+      "done": 0,
+      "total": 0
+    },
+    {
+      "uid": "EFS-006",
+      "title": "Watermark all videos",
+      "status": "done",
+      "next": "Tiled + corner wordmark; originals kept clean",
+      "files": "watermark.png",
+      "done": 0,
+      "total": 0
+    },
+    {
+      "uid": "EFS-009",
+      "title": "Malay / Chinese versions of top sellers",
+      "status": "done",
+      "next": "All 10 rendered, watermarked and captioned (5 Malay + 5 Chinese)",
+      "files": "fruits/videos-WM/",
+      "done": 10,
+      "total": 10
+    }
+  ]
+}
