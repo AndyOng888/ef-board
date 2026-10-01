@@ -34,7 +34,8 @@
   .btn:hover{transform:translateY(-1px);}
   .btn svg{transition:transform .6s cubic-bezier(.22,1,.36,1);}
   .btn.spin svg{transform:rotate(360deg);}
-  .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-top:13px;}
+  .stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin-top:13px;}
+  @media (max-width:860px){.stats{grid-template-columns:repeat(3,minmax(0,1fr));}}
   @media (max-width:560px){.stats{grid-template-columns:repeat(2,minmax(0,1fr));}}
   .stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;}
   .stat b{display:block;font-family:Fraunces,Georgia,serif;font-size:23px;font-weight:700;
@@ -105,6 +106,8 @@
   .v-corrected{background:color-mix(in srgb,var(--warn) 16%,transparent);color:var(--warn);}
   .v-mismatch,.v-no_receipt,.v-unreadable{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad);}
   .fix{font-size:11.5px;color:var(--warn);margin-top:3px;font-weight:600;}
+  .needcheck{font-size:11.5px;color:var(--bad);margin-top:3px;font-weight:600;}
+  .badge.check{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad);}
   .badge.wrote{background:color-mix(in srgb,var(--warn) 16%,transparent);color:var(--warn);}
   .flag{font-size:11.5px;color:var(--bad);margin-top:3px;}
   .chipsmall{display:flex;flex-wrap:wrap;gap:5px;}
@@ -175,10 +178,18 @@
                  ? '<span class="badge">' + (p.effective_units != null ? p.effective_units : p.units) +
                    '/' + p.target + '</span>' : '');
     if (p.wrote_wrong) badge += '<span class="badge wrote">wrote ' + p.wrote_wrong + ' wrong</span>';
+    if (p.needs_check) badge += '<span class="badge check">' + p.needs_check + ' to verify</span>';
     var sales = p.sales.map(function(s){
       var parsed = (s.claimed || []).map(function(c){ return c.qty + " × " + c.product; })
                    .join(", ") || "nothing countable";
       var fixed = "";
+      if (s.needs_physical_check){
+        fixed += '<div class="needcheck">&#9888; ' +
+          (s.verdict === "unreadable"
+            ? 'The uploaded photo is not a readable receipt'
+            : 'No receipt uploaded') +
+          ' — counted as a sale, but needs physical verification.</div>';
+      }
       if (s.wrote_wrong && (s.receipt_says || []).length){
         var real = s.receipt_says.map(function(c){ return c.qty + " × " + c.product; }).join(", ");
         fixed = '<div class="fix">&#9888; Receipt says <b>' + esc(real) +
@@ -230,7 +241,9 @@
       ['<b>' + (t.hourly_checks || 0) + '</b><span>hourly checks</span>', ''],
       ['<b>' + (t.claimed_units || 0) + '</b><span>units</span>', ''],
       ['<b>' + (t.below_target || 0) + '</b><span>below target</span>',
-       (t.below_target ? 'bad' : '')]
+       (t.below_target ? 'bad' : '')],
+      ['<b>' + (t.needs_check || 0) + '</b><span>to verify</span>',
+       (t.needs_check ? 'bad' : '')]
     ].map(function(s){ return '<div class="stat ' + s[1] + '">' + s[0] + '</div>'; }).join("");
 
     // group by Malaysian state, built from whoever actually worked that day
