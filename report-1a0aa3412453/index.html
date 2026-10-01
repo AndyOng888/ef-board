@@ -193,7 +193,7 @@
     // While the day is still running it says "so far", so nobody is chased at 10am for a figure
     // that has all afternoon to change.
     var b = p.band || {};
-    var sofar = (cur === todayISO() && !b.level === false && b.level !== "none") ? " so far" : "";
+    var sofar = (cur === todayISO() && b.level && b.level !== "none") ? " so far" : "";
     var bandLine = b.label
       ? '<span class="band ' + esc(b.level || "") + '">' + esc(b.label) + sofar +
         ' · ' + (p.effective_units != null ? p.effective_units : p.units) + ' units' +
