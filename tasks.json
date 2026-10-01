@@ -1,11 +1,11 @@
 {
-  "generated": "01 Oct 2026, 23:41",
+  "generated": "01 Oct 2026, 23:51",
   "tasks": [
     {
       "uid": "EFS-013",
       "title": "In-house promoter reporting + GPS attendance (replace TimeTec)",
       "status": "active",
-      "next": "Running unattended: 15-min scrapes + nightly verification, receipt is authoritative, 4-unit daily target, state grouping. Next: the 6 commission questions + outlet GPS list, then our own clock-in",
+      "next": "Running unattended: 15-min scrapes, nightly verification, receipt is authoritative, worded performance bands, state grouping. Next: the 6 commission questions + outlet GPS list, then our own clock-in",
       "files": "promoter-system/",
       "done": 0,
       "total": 0
