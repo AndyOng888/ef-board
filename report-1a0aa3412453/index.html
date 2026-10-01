@@ -23,12 +23,17 @@
   .wrap{max-width:900px;margin:0 auto;padding-inline:18px;padding-block:0 56px;}
   .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--ground);
        border-bottom:1px solid var(--line);margin-inline:-18px;padding:14px 18px 11px;}
-  .brandline{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .brandline{display:flex;align-items:center;gap:9px;flex-wrap:wrap;}
   .mark{font-family:Fraunces,Georgia,serif;font-weight:700;font-size:20px;}
   .mark em{font-style:normal;color:var(--accent);}
-  select{margin-left:auto;font:inherit;font-size:13px;font-weight:600;padding:6px 10px;
-         border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);
-         min-height:38px;}
+  .spacer{margin-left:auto;}
+  select,.btn{font:inherit;font-size:13px;font-weight:600;padding:7px 11px;border-radius:9px;
+       border:1px solid var(--line);background:var(--surface);color:var(--ink);min-height:38px;
+       cursor:pointer;}
+  .btn{display:inline-flex;align-items:center;gap:6px;transition:transform .12s;}
+  .btn:hover{transform:translateY(-1px);}
+  .btn svg{transition:transform .6s cubic-bezier(.22,1,.36,1);}
+  .btn.spin svg{transform:rotate(360deg);}
   .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-top:13px;}
   @media (max-width:560px){.stats{grid-template-columns:repeat(2,minmax(0,1fr));}}
   .stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;}
@@ -36,16 +41,29 @@
           font-variant-numeric:tabular-nums;line-height:1.1;}
   .stat span{font-size:10.5px;color:var(--ink-soft);font-weight:600;text-transform:uppercase;}
   .stat.bad b{color:var(--bad);}
+  .chips{display:flex;gap:7px;overflow-x:auto;margin:12px -18px 0;padding:2px 18px 4px;
+         scrollbar-width:none;}
+  .chips::-webkit-scrollbar{display:none;}
+  .chip{flex:0 0 auto;border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);
+        border-radius:999px;padding:7px 13px;font:inherit;font-size:12.5px;font-weight:600;
+        cursor:pointer;min-height:36px;transition:background .18s,color .18s,transform .12s;}
+  .chip:hover{transform:translateY(-1px);}
+  .chip[aria-pressed="true"]{background:var(--brand);color:var(--ground);border-color:var(--brand);}
+  .chip em{font-style:normal;opacity:.6;font-variant-numeric:tabular-nums;}
   .warnbar{display:flex;gap:10px;background:color-mix(in srgb,var(--warn) 12%,transparent);
            border:1px solid color-mix(in srgb,var(--warn) 40%,transparent);border-radius:12px;
            padding:11px 14px;margin-top:14px;font-size:12.5px;}
   .warnbar b{color:var(--warn);flex:0 0 auto;}
-  .list{display:grid;gap:11px;margin-top:16px;}
+  .state-h{display:flex;align-items:baseline;gap:9px;margin:22px 0 9px;}
+  .state-h h2{font-family:Fraunces,Georgia,serif;font-size:17px;font-weight:700;margin:0;}
+  .state-h span{font-size:11.5px;color:var(--ink-soft);font-weight:600;white-space:nowrap;}
+  .state-h i{flex:1;height:1px;background:var(--line);}
+  .list{display:grid;gap:10px;}
   .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;
-        box-shadow:var(--shadow);overflow:hidden;position:relative;}
+        box-shadow:var(--shadow);overflow:hidden;position:relative;
+        animation:rise .4s cubic-bezier(.22,1,.36,1) backwards;animation-delay:calc(var(--i)*35ms);}
   .card::before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:var(--stripe,var(--idle));}
-  .card{animation:rise .45s cubic-bezier(.22,1,.36,1) backwards;animation-delay:calc(var(--i)*45ms);}
-  @keyframes rise{from{opacity:0;transform:translateY(9px);}to{opacity:1;transform:none;}}
+  @keyframes rise{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
   .head{display:flex;gap:12px;align-items:flex-start;padding:13px 15px 11px 17px;cursor:pointer;
         width:100%;background:none;border:0;font:inherit;color:inherit;text-align:left;}
   .who{flex:1;min-width:0;}
@@ -82,10 +100,12 @@
   .v-match{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok);}
   .v-mismatch,.v-no_receipt,.v-unreadable{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad);}
   .flag{font-size:11.5px;color:var(--bad);margin-top:3px;}
-  .chips{display:flex;flex-wrap:wrap;gap:5px;}
-  .chip{font-size:11px;padding:3px 8px;border-radius:6px;background:var(--surface-2);
-        color:var(--ink-soft);font-weight:600;font-variant-numeric:tabular-nums;}
+  .chipsmall{display:flex;flex-wrap:wrap;gap:5px;}
+  .tag{font-size:11px;padding:3px 8px;border-radius:6px;background:var(--surface-2);
+       color:var(--ink-soft);font-weight:600;font-variant-numeric:tabular-nums;}
   .muted{font-size:12.5px;color:var(--ink-soft);}
+  .empty{text-align:center;padding:40px 20px;color:var(--ink-soft);border:1px dashed var(--line);
+         border-radius:14px;margin-top:16px;}
   .note{font-size:11.5px;color:var(--ink-soft);margin-top:22px;text-align:center;line-height:1.6;}
   :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px;}
   @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;}}
@@ -93,91 +113,184 @@
 <div class="wrap">
   <header class="top">
     <div class="brandline"><div class="mark">EF Store <em>Promoter Report</em></div>
-      <select id="day" aria-label="Day"></select></div>
+      <span class="spacer"></span>
+      <select id="day" aria-label="Day"></select>
+      <button class="btn" id="refresh" type="button" title="Fetch the latest data">
+        <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path
+          d="M13.6 8a5.6 5.6 0 1 1-1.7-4M13.5 1.5V5H10" fill="none" stroke="currentColor"
+          stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Refresh</button>
+    </div>
     <div class="stats" id="stats"></div>
+    <div class="chips" id="areas"></div>
   </header>
-  <main class="list" id="list"></main>
+  <main id="list"></main>
   <p class="note">Customer names and phone numbers are removed from this report.<br>
-     <span id="stamp"></span></p>
+     <span id="stamp">Loading&hellip;</span></p>
 </div>
-<script id="data" type="application/json">{"generated": "01 Oct 2026, 11:00", "digest": "ee0ef14050ce365b", "days": [{"date": "2026-10-01", "partial": false, "partial_note": "", "totals": {"people": 5, "claimed_units": 1, "verified_units": 0, "claimed_commission": 3.0, "verified_commission": 0, "hourly_checks": 0, "pending": 1, "problems": 0}, "people": [{"name": "Ms Y.", "site": "Adventish Hospital", "first": "08:29", "last": "10:32", "checks": [], "check_count": 0, "sales": [{"at": "10:32", "said": "Sold 1 Tin(COCOA) 10:21am. FOC shaker", "claimed": [{"product": "Cocoa Tin", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 3.0, "verdict": "pending", "flags": []}], "units": 1, "commission": 3.0, "verified_units": 0, "problems": 0, "others": [{"at": "10:05", "category": "video", "what": "Video 10:05am"}], "visits": 0}, {"name": "Carine", "site": "Ai Sim Enterprise", "first": "10:06", "last": "10:59", "checks": [], "check_count": 0, "sales": [], "units": 0, "commission": 0, "verified_units": 0, "problems": 0, "others": [], "visits": 1}, {"name": "Jhoti D.", "site": "Vcare Pharmacy Butterworth", "first": "08:51", "last": "08:51", "checks": [], "check_count": 0, "sales": [], "units": 0, "commission": 0, "verified_units": 0, "problems": 0, "others": [], "visits": 0}, {"name": "Saw H.W.", "site": "Mr Saw House", "first": "08:59", "last": "10:29", "checks": [], "check_count": 0, "sales": [], "units": 0, "commission": 0, "verified_units": 0, "problems": 0, "others": [], "visits": 3}, {"name": "Tang S.R.", "site": "Village Grocer Southkey", "first": "10:59", "last": "10:59", "checks": [], "check_count": 0, "sales": [], "units": 0, "commission": 0, "verified_units": 0, "problems": 0, "others": [], "visits": 0}], "repeats": []}, {"date": "2026-09-28", "partial": false, "partial_note": "", "totals": {"people": 5, "claimed_units": 15, "verified_units": 15, "claimed_commission": 43.5, "verified_commission": 43.5, "hourly_checks": 12, "pending": 0, "problems": 0}, "people": [{"name": "Jhoti D.", "site": "Starlife Pharma Sdn Bhd", "first": "08:17", "last": "17:35", "checks": [], "check_count": 0, "sales": [{"at": "11:10", "said": "Avomilk original 1 tin free 1 bowl", "claimed": [{"product": "Original Tin", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 3.0, "verdict": "match", "flags": []}, {"at": "11:54", "said": "Avomilk original 1 tin free 1 bowl", "claimed": [{"product": "Original Tin", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 3.0, "verdict": "match", "flags": []}, {"at": "14:43", "said": "Avomilk cocoa 2 tin original 1 tin free 3 bowl n 1 Juju Bag", "claimed": [{"product": "Cocoa Tin", "qty": 2, "assumed_flavour": false}, {"product": "Original Tin", "qty": 1, "assumed_flavour": false}], "units": 3, "commission": 9.0, "verdict": "match", "flags": []}, {"at": "17:16", "said": "Avomilk original 2 tin cocoa 1 tin free 3 bowl n 1 Juju Bag", "claimed": [{"product": "Original Tin", "qty": 2, "assumed_flavour": false}, {"product": "Cocoa Tin", "qty": 1, "assumed_flavour": false}], "units": 3, "commission": 9.0, "verdict": "match", "flags": []}], "units": 8, "commission": 24.0, "verified_units": 8, "problems": 0, "others": [], "visits": 0}, {"name": "Jess C.", "site": "Jaya Grocer Eco Galleria", "first": "15:48", "last": "22:00", "checks": ["16:37", "17:02", "18:43", "19:41", "20:43", "21:17"], "check_count": 6, "sales": [{"at": "16:27", "said": "2 tin ori with free gift coin n travel package", "claimed": [{"product": "Original Tin", "qty": 2, "assumed_flavour": false}], "units": 2, "commission": 6.0, "verdict": "match", "flags": []}, {"at": "17:02", "said": "1 tin ori with free gift bag", "claimed": [{"product": "Original Tin", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 3.0, "verdict": "match", "flags": []}, {"at": "19:41", "said": "1 tin ori with free gift bag", "claimed": [{"product": "Original Tin", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 3.0, "verdict": "match", "flags": []}, {"at": "21:13", "said": "1 tin ori with free gift bag", "claimed": [{"product": "Original Tin", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 3.0, "verdict": "match", "flags": []}], "units": 5, "commission": 15.0, "verified_units": 5, "problems": 0, "others": [], "visits": 0}, {"name": "Tang S.R.", "site": "Village Grocer Southkey", "first": "11:01", "last": "20:36", "checks": ["12:08", "13:36", "14:14", "16:37", "17:32", "18:02"], "check_count": 6, "sales": [{"at": "20:35", "said": "1boxori 1 ikeabag", "claimed": [{"product": "Original Box", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 1.5, "verdict": "match", "flags": []}, {"at": "20:36", "said": "1 tin ori 1 ikeabag", "claimed": [{"product": "Original Tin", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 3.0, "verdict": "match", "flags": []}], "units": 2, "commission": 4.5, "verified_units": 2, "problems": 0, "others": [], "visits": 0}, {"name": "Carine", "site": "Farmasi Lapangan Jaya", "first": "12:15", "last": "15:37", "checks": [], "check_count": 0, "sales": [], "units": 0, "commission": 0, "verified_units": 0, "problems": 0, "others": [], "visits": 5}, {"name": "Saw H.W.", "site": "Mr Saw House", "first": "08:56", "last": "18:25", "checks": [], "check_count": 0, "sales": [], "units": 0, "commission": 0, "verified_units": 0, "problems": 0, "others": [{"at": "16:09", "category": "note", "what": "Field visits completed. Proceeded to invoice sorting and packing goods at home for tomorrow's delive"}], "visits": 5}], "repeats": []}, {"date": "2026-09-27", "partial": true, "partial_note": "Only 15:21 onward - TimeTec returns newest first and capped at 200 rows, so the morning of 27 Sep was never fetched. Totals understate the day.", "totals": {"people": 16, "claimed_units": 46, "verified_units": 0, "claimed_commission": 120.0, "verified_commission": 0, "hourly_checks": 57, "pending": 41, "problems": 1}, "people": [{"name": "Jess C.", "site": "Jaya Grocer Eco Galleria", "first": "15:30", "last": "20:04", "checks": ["15:36", "16:25", "17:43", "18:53", "19:49"], "check_count": 5, "sales": [{"at": "17:54", "said": "2 box ori", "claimed": [{"product": "Original Box", "qty": 2, "assumed_flavour": false}], "units": 2, "commission": 3.0, "verdict": "pending", "flags": []}, {"at": "17:54", "said": "1tin ori", "claimed": [{"product": "Original Tin", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 3.0, "verdict": "pending", "flags": []}, {"at": "18:52", "said": "1 tin ori with free gift bag", "claimed": [{"product": "Original Tin", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 3.0, "verdict": "pending", "flags": []}, {"at": "19:25", "said": "1 tin ori with free gift", "claimed": [{"product": "Original Tin", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 3.0, "verdict": "pending", "flags": []}, {"at": "19:42", "said": "1box ori with free gift", "claimed": [{"product": "Original Box", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 1.5, "verdict": "pending", "flags": []}, {"at": "20:01", "said": "1 tin ori with free gift", "claimed": [{"product": "Original Tin", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 3.0, "verdict": "pending", "flags": []}], "units": 7, "commission": 16.5, "verified_units": 0, "problems": 0, "others": [], "visits": 0}, {"name": "Jia R.", "site": "VG SKS City Mall", "first": "17:15", "last": "21:02", "checks": ["21:02"], "check_count": 1, "sales": [{"at": "17:15", "said": "1 ori box + free 1 bag", "claimed": [{"product": "Original Box", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 1.5, "verdict": "pending", "flags": []}, {"at": "17:19", "said": "1 ori tin + free 1 bag", "claimed": [{"product": "Original Tin", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 3.0, "verdict": "pending", "flags": []}, {"at": "17:20", "said": "1 ori box + free 1 bag", "claimed": [{"product": "Original Box", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 1.5, "verdict": "pending", "flags": []}, {"at": "17:20", "said": "1 ori tin + free 1 bag", "claimed": [{"product": "Original Tin", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 3.0, "verdict": "pending", "flags": []}, {"at": "18:05", "said": "1 ori tin + free 1 bag", "claimed": [{"product": "Original Tin", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 3.0, "verdict": "pending", "flags": []}], "units": 5, "commission": 12.0, "verified_units": 0, "problems": 0, "others": [], "visits": 0}, {"name": "Phaik E.", "site": "VG Queen Waterfront", "first": "15:21", "last": "21:01", "checks": ["16:02", "17:55", "18:48", "19:40", "20:11"], "check_count": 5, "sales": [{"at": "15:21", "said": "[name removed] [contact removed] 1 box original and free 1 IKEA bag", "claimed": [{"product": "Original Box", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 1.5, "verdict": "pending", "flags": []}, {"at": "15:21", "said": "[name removed] [contact removed] 1 box original and 1free IKEA bag", "claimed": [{"product": "Original Box", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 1.5, "verdict": "pending", "flags": []}, {"at": "15:37", "said": "[name removed] [contact removed] 1 tin original and free 1ikea bag", "claimed": [{"product": "Original Tin", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 3.0, "verdict": "pending", "flags": []}, {"at": "15:48", "said": "[name removed] The [contact removed] 1 tin original and 1 free IKEA bag", "claimed": [{"product": "Original Tin", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 3.0, "verdict": "pending", "flags": []}, {"at": "19:36", "said": "[name removed] [contact removed] 1 tin [name removed] and I IKEA bag", "claimed": [{"product": "Cocoa Tin", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 3.0, "verdict": "pending", "flags": []}], "units": 5, "commission": 12.0, "verified_units": 0, "problems": 0, "others": [{"at": "15:21", "category": "note", "what": "I took photo of the above [name removed] resit but l can't find it"}], "visits": 0}, {"name": "Neoh Y.H.", "site": "AEON Mall Bukit Indah", "first": "16:20", "last": "21:02", "checks": ["16:20", "17:13", "18:33", "19:23"], "check_count": 4, "sales": [{"at": "17:52", "said": "1 tin ori+1 free ikea bag", "claimed": [{"product": "Original Tin", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 3.0, "verdict": "pending", "flags": []}, {"at": "20:20", "said": "1 tin ori+1 free ikea bag", "claimed": [{"product": "Original Tin", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 3.0, "verdict": "pending", "flags": []}, {"at": "20:23", "said": "1 tin ori+1 tin cocoa-1 free travel pack +1 gold coin", "claimed": [{"product": "Original Tin", "qty": 1, "assumed_flavour": false}, {"product": "Cocoa Tin", "qty": 1, "assumed_flavour": false}], "units": 2, "commission": 6.0, "verdict": "pending", "flags": []}], "units": 4, "commission": 12.0, "verified_units": 0, "problems": 0, "others": [], "visits": 0}, {"name": "Serena", "site": "AEON Mall Ipoh Station 18", "first": "15:26", "last": "21:02", "checks": ["16:01", "18:52", "19:07", "20:06"], "check_count": 4, "sales": [{"at": "15:26", "said": "[name removed] [contact removed] 1ori tin free ikea bag", "claimed": [{"product": "Original Tin", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 3.0, "verdict": "pending", "flags": []}, {"at": "18:20", "said": "[name removed] [contact removed] 1ori tin free ikea bag", "claimed": [{"product": "Original Tin", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 3.0, "verdict": "pending", "flags": []}, {"at": "18:23", "said": "[name removed] [contact removed] 1cocoa tin free ikea bag", "claimed": [{"product": "Cocoa Tin", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 3.0, "verdict": "pending", "flags": []}, {"at": "20:23", "said": "[contact removed] [name removed] 1ori tin free ikea bag", "claimed": [{"product": "Original Tin", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 3.0, "verdict": "pending", "flags": []}], "units": 4, "commission": 12.0, "verified_units": 0, "problems": 0, "others": [], "visits": 0}, {"name": "Tang S.R.", "site": "Village Grocer Southkey", "first": "16:17", "last": "20:32", "checks": ["16:17", "17:26", "18:26", "19:21", "20:23"], "check_count": 5, "sales": [{"at": "20:32", "said": "1 tin coco no receipt no freegift", "claimed": [{"product": "Cocoa Tin", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 3.0, "verdict": "no_receipt", "flags": ["promoter says there is NO receipt - cannot be verified"]}, {"at": "20:32", "said": "1 box ori 1 ikea bag", "claimed": [{"product": "Original Box", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 1.5, "verdict": "pending", "flags": []}, {"at": "20:32", "said": "1 tin coco 1 ikea bag", "claimed": [{"product": "Cocoa Tin", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 3.0, "verdict": "pending", "flags": []}, {"at": "20:32", "said": "1 tin ori 1 ikea bag", "claimed": [{"product": "Original Tin", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 3.0, "verdict": "pending", "flags": []}], "units": 4, "commission": 10.5, "verified_units": 0, "problems": 1, "others": [], "visits": 0}, {"name": "Chloe N.", "site": "Jaya Grocer Austin Height", "first": "15:30", "last": "21:03", "checks": ["15:42", "16:23", "17:54", "18:38", "19:48"], "check_count": 5, "sales": [{"at": "15:43", "said": "1 tin ori sold（customer no redeem）", "claimed": [{"product": "Original Tin", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 3.0, "verdict": "pending", "flags": []}, {"at": "17:53", "said": "1 tin ori sold（1 Ikea bag）", "claimed": [{"product": "Original Tin", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 3.0, "verdict": "pending", "flags": []}, {"at": "17:56", "said": "1 tin ori sold（1 ikea bag）", "claimed": [{"product": "Original Tin", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 3.0, "verdict": "pending", "flags": []}], "units": 3, "commission": 9.0, "verified_units": 0, "problems": 0, "others": [], "visits": 0}, {"name": "Lee B.S.", "site": "Everrise Bintulu", "first": "16:08", "last": "21:11", "checks": ["16:08", "17:51", "19:21"], "check_count": 3, "sales": [{"at": "18:35", "said": "Sold 1 tin Avomilk free 1 Avomilk travel pack. [contact removed] [name removed]", "claimed": [{"product": "Original Tin", "qty": 1, "assumed_flavour": true}], "units": 1, "commission": 3.0, "verdict": "pending", "flags": ["flavour not stated - assumed Original"]}, {"at": "20:42", "said": "Sold 1 tin Avomilk free 1 Avomilk travel pack. Customer rushing no give contact details", "claimed": [{"product": "Original Tin", "qty": 1, "assumed_flavour": true}], "units": 1, "commission": 3.0, "verdict": "pending", "flags": ["flavour not stated - assumed Original"]}, {"at": "20:43", "said": "Sold 1 tin Avomilk free 1 Avomilk travel pack. [name removed] [contact removed]", "claimed": [{"product": "Original Tin", "qty": 1, "assumed_flavour": true}], "units": 1, "commission": 3.0, "verdict": "pending", "flags": ["flavour not stated - assumed Original"]}], "units": 3, "commission": 9.0, "verified_units": 0, "problems": 0, "others": [], "visits": 0}, {"name": "Chin Y.W.", "site": "VG Kiara Bay", "first": "17:36", "last": "21:16", "checks": ["17:36", "18:07", "21:01"], "check_count": 3, "sales": [{"at": "18:07", "said": "2 Tin Original + 1 Free Ikea Bag + 1 Ori Travel Pack", "claimed": [{"product": "Original Tin", "qty": 2, "assumed_flavour": false}], "units": 2, "commission": 6.0, "verdict": "pending", "flags": []}], "units": 2, "commission": 6.0, "verified_units": 0, "problems": 0, "others": [], "visits": 0}, {"name": "Jocelyn", "site": "Everrise Boulevard Miri", "first": "16:26", "last": "21:00", "checks": ["16:26", "17:16", "19:11", "20:06"], "check_count": 4, "sales": [{"at": "17:12", "said": "[name removed] [contact removed] - 1 tin ori + 1 tin cocoa + 2 ori travel pack", "claimed": [{"product": "Original Tin", "qty": 1, "assumed_flavour": false}, {"product": "Cocoa Tin", "qty": 1, "assumed_flavour": false}], "units": 2, "commission": 6.0, "verdict": "pending", "flags": []}], "units": 2, "commission": 6.0, "verified_units": 0, "problems": 0, "others": [], "visits": 0}, {"name": "Zhong H.", "site": "JG Sunway Carnival", "first": "16:59", "last": "21:24", "checks": ["18:07", "19:04", "20:09"], "check_count": 3, "sales": [{"at": "17:34", "said": "[name removed] [contact removed] (1 Tin Original + 1 Free Bag)", "claimed": [{"product": "Original Tin", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 3.0, "verdict": "pending", "flags": []}, {"at": "21:13", "said": "1 Box Original (no contact)", "claimed": [{"product": "Original Box", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 1.5, "verdict": "pending", "flags": []}], "units": 2, "commission": 4.5, "verified_units": 0, "problems": 0, "others": [], "visits": 0}, {"name": "Carmen", "site": "VG Plaza Arkadia", "first": "15:24", "last": "21:00", "checks": [], "check_count": 0, "sales": [{"at": "15:24", "said": "1 box original + 1 IKEA bag (customer didn't want to give her name and contact number)", "claimed": [{"product": "Original Box", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 1.5, "verdict": "pending", "flags": []}], "units": 1, "commission": 1.5, "verified_units": 0, "problems": 0, "others": [{"at": "17:15", "category": "video", "what": "Video 5.15pm"}, {"at": "18:13", "category": "video", "what": "Video 6.13pm"}, {"at": "19:16", "category": "video", "what": "Video 7.16pm"}, {"at": "20:10", "category": "video", "what": "Video 8.10pm"}], "visits": 0}, {"name": "Chiang D.W.", "site": "AEON Tebrau City", "first": "16:56", "last": "20:59", "checks": ["16:56", "17:31", "18:35", "19:17", "20:13"], "check_count": 5, "sales": [{"at": "17:32", "said": "ori tinx1 ikea bagx1", "claimed": [{"product": "Original Tin", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 3.0, "verdict": "pending", "flags": []}], "units": 1, "commission": 3.0, "verified_units": 0, "problems": 0, "others": [], "visits": 0}, {"name": "Lee X.Y.", "site": "VG 1st Avenue", "first": "16:10", "last": "19:57", "checks": [], "check_count": 0, "sales": [{"at": "18:03", "said": "[name removed] [contact removed] 1 box org free 1 ikea bag", "claimed": [{"product": "Original Box", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 1.5, "verdict": "pending", "flags": []}], "units": 1, "commission": 1.5, "verified_units": 0, "problems": 0, "others": [{"at": "16:10", "category": "video", "what": "Video"}, {"at": "17:38", "category": "video", "what": "Video"}, {"at": "18:56", "category": "video", "what": "Video"}, {"at": "19:57", "category": "video", "what": "Video"}], "visits": 0}, {"name": "Tang Z.Y.", "site": "AEON Mall Queensbay", "first": "15:26", "last": "21:29", "checks": ["15:26", "18:40", "19:01", "20:05"], "check_count": 4, "sales": [{"at": "18:47", "said": "No coming back (1 Tin Avomilk )", "claimed": [{"product": "Original Tin", "qty": 1, "assumed_flavour": true}], "units": 1, "commission": 3.0, "verdict": "pending", "flags": ["flavour not stated - assumed Original"]}], "units": 1, "commission": 3.0, "verified_units": 0, "problems": 0, "others": [], "visits": 0}, {"name": "Victoria T.", "site": "Everrise Viva City Kuching", "first": "15:24", "last": "21:01", "checks": ["15:24", "16:07", "17:14", "18:03", "19:08", "20:02"], "check_count": 6, "sales": [{"at": "19:26", "said": "[contact removed] [name removed] Sold 1 Box Ori, Free 1 IKEA Bag", "claimed": [{"product": "Original Box", "qty": 1, "assumed_flavour": false}], "units": 1, "commission": 1.5, "verdict": "pending", "flags": []}], "units": 1, "commission": 1.5, "verified_units": 0, "problems": 0, "others": [], "visits": 0}], "repeats": []}]}</script>
 <script>
 (function(){
   "use strict";
-  var payload = JSON.parse(document.getElementById("data").textContent);
-  var days = payload.days, cur = days.length ? days[0].date : "", open = {};
+  var days = [], cur = "", area = "all", open = {}, generated = "", loading = false;
   var elList = document.getElementById("list"), elStats = document.getElementById("stats"),
-      elDay = document.getElementById("day");
-  document.getElementById("stamp").textContent = "Updated " + payload.generated;
+      elDay = document.getElementById("day"), elAreas = document.getElementById("areas"),
+      elStamp = document.getElementById("stamp"), elRefresh = document.getElementById("refresh");
 
-  function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,function(c){
+  function esc(s){ return String(s == null ? "" : s).replace(/[&<>"]/g, function(c){
     return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]; }); }
-  function mins(t){ var p=String(t||"").split(":"); return (+p[0]||0)*60+(+p[1]||0); }
-  function fmt(iso){ var d=new Date(iso+"T00:00:00");
-    return isNaN(d)?iso:d.toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short"}); }
+  function mins(t){ var p = String(t || "").split(":"); return (+p[0] || 0) * 60 + (+p[1] || 0); }
+  function fmtDay(iso){
+    var d = new Date(iso + "T00:00:00");
+    return isNaN(d) ? iso : d.toLocaleDateString(undefined,
+      {weekday:"short", day:"numeric", month:"short"});
+  }
 
   function timeline(p){
-    var S=8*60,E=23*60;
-    function pos(t){ return Math.max(0,Math.min(100,(mins(t)-S)/(E-S)*100)); }
-    var m = p.checks.map(function(t){ return '<i style="left:'+pos(t).toFixed(1)+'%" title="'+esc(t)+'"></i>'; })
-      .concat(p.sales.map(function(s){ return '<i class="sale" style="left:'+pos(s.at).toFixed(1)+'%" title="'+esc(s.at)+'"></i>'; })).join("");
-    return '<div class="timeline"><div class="tl">'+m+'</div><div class="tlkey">'+
-      '<span><i class="dot" style="background:var(--ok)"></i>'+p.check_count+' hourly checks</span>'+
-      '<span><i class="dot" style="background:var(--accent)"></i>'+p.sales.length+' sales</span>'+
+    var S = 8 * 60, E = 23 * 60;
+    function pos(t){ return Math.max(0, Math.min(100, (mins(t) - S) / (E - S) * 100)); }
+    var marks = p.checks.map(function(t){
+        return '<i style="left:' + pos(t).toFixed(1) + '%" title="' + esc(t) + '"></i>'; })
+      .concat(p.sales.map(function(s){
+        return '<i class="sale" style="left:' + pos(s.at).toFixed(1) + '%" title="' + esc(s.at) + '"></i>'; }))
+      .join("");
+    return '<div class="timeline"><div class="tl">' + marks + '</div><div class="tlkey">' +
+      '<span><i class="dot" style="background:var(--ok)"></i>' + p.check_count + ' hourly checks</span>' +
+      '<span><i class="dot" style="background:var(--accent)"></i>' + p.sales.length + ' sales</span>' +
       '<span>8am &rarr; 11pm</span></div></div>';
   }
 
-  function card(p,i){
-    var isOpen=!!open[p.name];
+  function card(p, i){
+    var isOpen = !!open[p.name];
     var stripe = p.problems ? "var(--bad)" : (p.sales.length ? "var(--ok)" : "var(--warn)");
     var sales = p.sales.map(function(s){
-      var parsed=(s.claimed||[]).map(function(c){return c.qty+" \u00d7 "+c.product;}).join(", ")||"nothing countable";
-      return '<div class="sale"><span class="stime">'+esc(s.at)+'</span><span class="sbody">'+
-        '<span class="parsed">'+esc(parsed)+'</span><span class="said">"'+esc(s.said)+'"</span>'+
-        (s.flags||[]).map(function(f){return '<div class="flag">&#9873; '+esc(f)+'</div>';}).join("")+
-        '</span><span class="verdict v-'+esc(s.verdict)+'">'+esc(String(s.verdict).replace("_"," "))+'</span></div>';
+      var parsed = (s.claimed || []).map(function(c){ return c.qty + " × " + c.product; })
+                   .join(", ") || "nothing countable";
+      return '<div class="sale"><span class="stime">' + esc(s.at) + '</span><span class="sbody">' +
+        '<span class="parsed">' + esc(parsed) + '</span>' +
+        '<span class="said">&ldquo;' + esc(s.said) + '&rdquo;</span>' +
+        (s.flags || []).map(function(f){ return '<div class="flag">&#9873; ' + esc(f) + '</div>'; }).join("") +
+        '</span><span class="verdict v-' + esc(s.verdict) + '">' +
+        esc(String(s.verdict).replace("_", " ")) + '</span></div>';
     }).join("") || '<div class="muted">No sales logged.</div>';
+
     var checks = p.checks.length
-      ? '<div class="chips">'+p.checks.map(function(t){return '<span class="chip">'+esc(t)+'</span>';}).join("")+'</div>'
+      ? '<div class="chipsmall">' + p.checks.map(function(t){
+          return '<span class="tag">' + esc(t) + '</span>'; }).join("") + '</div>'
       : '<div class="muted">No hourly checks logged.</div>';
-    return '<article class="card'+(isOpen?" open":"")+'" style="--stripe:'+stripe+';--i:'+i+'">'+
-      '<button class="head" type="button" data-t="'+esc(p.name)+'" aria-expanded="'+isOpen+'">'+
-      '<span class="who"><b>'+esc(p.name)+'</b><span>'+esc(p.site||"\u2014")+' \u00b7 '+esc(p.first)+'\u2013'+esc(p.last)+'</span></span>'+
-      '<span class="nums">'+
-      '<span class="num"><b>'+p.check_count+'</b><span>checks</span></span>'+
-      '<span class="num"><b>'+p.units+'</b><span>units</span></span>'+
-      '<span class="num"><b>RM'+Number(p.commission).toFixed(2)+'</b><span>claimed</span></span>'+
-      '</span><svg class="chev" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">'+
-      '<path d="M5 3l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'+
-      '</button>'+timeline(p)+
-      '<div class="body"><div><div class="inner"><div class="lbl">Sales</div>'+sales+
-      '<div class="lbl">Hourly checks</div>'+checks+'</div></div></div></article>';
+
+    return '<article class="card' + (isOpen ? " open" : "") +
+      '" style="--stripe:' + stripe + ';--i:' + i + '">' +
+      '<button class="head" type="button" data-t="' + esc(p.name) + '" aria-expanded="' + isOpen + '">' +
+      '<span class="who"><b>' + esc(p.name) + '</b><span>' + esc(p.site || "—") +
+      ' · ' + esc(p.first) + '–' + esc(p.last) + '</span></span>' +
+      '<span class="nums">' +
+      '<span class="num"><b>' + p.check_count + '</b><span>checks</span></span>' +
+      '<span class="num"><b>' + p.units + '</b><span>units</span></span>' +
+      '<span class="num"><b>RM' + Number(p.commission).toFixed(2) + '</b><span>claimed</span></span>' +
+      '</span><svg class="chev" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">' +
+      '<path d="M5 3l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" ' +
+      'stroke-linecap="round" stroke-linejoin="round"/></svg></button>' +
+      timeline(p) +
+      '<div class="body"><div><div class="inner"><div class="lbl">Sales</div>' + sales +
+      '<div class="lbl">Hourly checks</div>' + checks + '</div></div></div></article>';
   }
 
   function render(){
-    var d = days.filter(function(x){ return x.date===cur; })[0];
+    var d = null;
+    for (var k = 0; k < days.length; k++) if (days[k].date === cur) d = days[k];
+
     elDay.innerHTML = days.map(function(x){
-      return '<option value="'+x.date+'"'+(x.date===cur?' selected':'')+'>'+fmt(x.date)+'</option>'; }).join("");
-    if(!d){ elList.innerHTML=''; return; }
-    var t = d.totals||{};
+      return '<option value="' + x.date + '"' + (x.date === cur ? ' selected' : '') + '>' +
+             fmtDay(x.date) + '</option>'; }).join("");
+
+    if (!d){ elList.innerHTML = '<div class="empty">No data for this day.</div>'; return; }
+
+    var t = d.totals || {};
     elStats.innerHTML = [
-      ['<b>'+(t.people||0)+'</b><span>worked</span>',''],
-      ['<b>'+(t.hourly_checks||0)+'</b><span>hourly checks</span>',''],
-      ['<b>'+(t.claimed_units||0)+'</b><span>units</span>',''],
-      ['<b>'+((t.pending||0)+(t.problems||0))+'</b><span>to check</span>',(t.problems?'bad':'')]
-    ].map(function(s){ return '<div class="stat '+s[1]+'">'+s[0]+'</div>'; }).join("");
-    var warn = d.partial ? '<div class="warnbar"><b>Partial day</b><span>'+esc(d.partial_note)+'</span></div>' : '';
-    elList.innerHTML = warn + d.people.map(card).join("");
+      ['<b>' + (t.people || 0) + '</b><span>worked</span>', ''],
+      ['<b>' + (t.hourly_checks || 0) + '</b><span>hourly checks</span>', ''],
+      ['<b>' + (t.claimed_units || 0) + '</b><span>units</span>', ''],
+      ['<b>' + ((t.pending || 0) + (t.problems || 0)) + '</b><span>to check</span>',
+       (t.problems ? 'bad' : '')]
+    ].map(function(s){ return '<div class="stat ' + s[1] + '">' + s[0] + '</div>'; }).join("");
+
+    // group by Malaysian state, built from whoever actually worked that day
+    var byArea = {};
+    d.people.forEach(function(p){
+      var a = p.area || "Unassigned";
+      (byArea[a] = byArea[a] || []).push(p);
+    });
+    var names = Object.keys(byArea).sort();
+
+    elAreas.innerHTML = ['<button class="chip" type="button" data-a="all" aria-pressed="' +
+        (area === "all") + '">All <em>' + d.people.length + '</em></button>']
+      .concat(names.map(function(a){
+        return '<button class="chip" type="button" data-a="' + esc(a) + '" aria-pressed="' +
+               (area === a) + '">' + esc(a) + ' <em>' + byArea[a].length + '</em></button>';
+      })).join("");
+
+    var show = names.filter(function(a){ return area === "all" || a === area; });
+    var warn = d.partial
+      ? '<div class="warnbar"><b>Partial day</b><span>' + esc(d.partial_note) + '</span></div>' : '';
+
+    if (!show.length){
+      elList.innerHTML = warn + '<div class="empty">Nobody worked in that state today.</div>';
+      return;
+    }
+
+    var i = 0;
+    elList.innerHTML = warn + show.map(function(a){
+      var ppl = byArea[a].slice().sort(function(x, y){ return (y.units || 0) - (x.units || 0); });
+      var units = ppl.reduce(function(sum, p){ return sum + (p.units || 0); }, 0);
+      return '<div class="state-h"><h2>' + esc(a) + '</h2><span>' + ppl.length +
+             (ppl.length === 1 ? ' promoter' : ' promoters') + ' · ' + units + ' units</span>' +
+             '<i></i></div><div class="list">' +
+             ppl.map(function(p){ return card(p, i++); }).join("") + '</div>';
+    }).join("");
   }
 
-  document.addEventListener("click",function(e){
-    var h=e.target.closest("[data-t]");
-    if(!h) return;
-    var k=h.getAttribute("data-t"); open[k]=!open[k];
-    h.closest(".card").classList.toggle("open",open[k]);
-    h.setAttribute("aria-expanded",String(!!open[k]));
+  function load(manual){
+    if (loading) return;
+    loading = true;
+    if (manual) elRefresh.classList.add("spin");
+    fetch("data.json?t=" + Date.now(), {cache: "no-store"})
+      .then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function(payload){
+        days = payload.days || [];
+        generated = payload.generated || "";
+        var found = false;
+        for (var k = 0; k < days.length; k++) if (days[k].date === cur) found = true;
+        if (!found) cur = days.length ? days[0].date : "";
+        render();
+        elStamp.textContent = generated ? ("Data from " + generated) : "";
+      })
+      .catch(function(){
+        if (!days.length) elList.innerHTML =
+          '<div class="empty">Could not load the report. Try Refresh.</div>';
+        elStamp.textContent = "Could not refresh — showing the last data loaded.";
+      })
+      .then(function(){
+        loading = false;
+        setTimeout(function(){ elRefresh.classList.remove("spin"); }, 700);
+      });
+  }
+
+  document.addEventListener("click", function(e){
+    var h = e.target.closest("[data-t]");
+    if (h){
+      var k = h.getAttribute("data-t");
+      open[k] = !open[k];
+      h.closest(".card").classList.toggle("open", open[k]);
+      h.setAttribute("aria-expanded", String(!!open[k]));
+      return;
+    }
+    var a = e.target.closest("[data-a]");
+    if (a){ area = a.getAttribute("data-a"); render(); }
   });
-  elDay.addEventListener("change",function(){ cur=elDay.value; open={}; render(); });
-  render();
+  elDay.addEventListener("change", function(){ cur = elDay.value; open = {}; render(); });
+  elRefresh.addEventListener("click", function(){ load(true); });
+  document.addEventListener("visibilitychange", function(){ if (!document.hidden) load(false); });
+  setInterval(function(){ load(false); }, 60000);
+  load(false);
 })();
 </script>
