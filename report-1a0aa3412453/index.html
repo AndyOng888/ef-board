@@ -184,11 +184,20 @@
                    .join(", ") || "nothing countable";
       var fixed = "";
       if (s.needs_physical_check){
-        fixed += '<div class="needcheck">&#9888; ' +
-          (s.verdict === "unreadable"
-            ? 'The uploaded photo is not a readable receipt'
-            : 'No receipt uploaded') +
-          ' — counted as a sale, but needs physical verification.</div>';
+        // Say what is wrong AND what to do about it - "no receipt" and "wrong photo" need
+        // different conversations with the promoter.
+        var what, todo;
+        if (s.verdict === "unreadable"){
+          what = "The uploaded photo is not a readable receipt";
+          todo = "Ask the promoter to re-upload a clear photo of the receipt.";
+        } else {
+          what = "No receipt uploaded";
+          todo = "Check the outlet's receipt book or till records for this sale.";
+        }
+        fixed += '<div class="needcheck">&#9888; ' + what +
+                 ' — counted as a sale, but needs physical verification.<br>' +
+                 '<span style="font-weight:500">' + todo +
+                 (s.note ? ' · ' + esc(s.note) : '') + '</span></div>';
       }
       if (s.wrote_wrong && (s.receipt_says || []).length){
         var real = s.receipt_says.map(function(c){ return c.qty + " × " + c.product; }).join(", ");
