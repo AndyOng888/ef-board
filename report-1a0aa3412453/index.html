@@ -108,6 +108,12 @@
   .fix{font-size:11.5px;color:var(--warn);margin-top:3px;font-weight:600;}
   .needcheck{font-size:11.5px;color:var(--bad);margin-top:3px;font-weight:600;}
   .badge.check{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad);}
+  .band{display:block;font-size:11.5px;font-weight:700;margin-top:3px;}
+  .band small{font-weight:600;opacity:.85;}
+  .band.bad{color:var(--bad);}
+  .band.ok{color:var(--ok);}
+  .band.great{color:var(--accent);}
+  .band.none{color:var(--ink-soft);}
   .badge.wrote{background:color-mix(in srgb,var(--warn) 16%,transparent);color:var(--warn);}
   .flag{font-size:11.5px;color:var(--bad);margin-top:3px;}
   .chipsmall{display:flex;flex-wrap:wrap;gap:5px;}
@@ -148,6 +154,11 @@
 
   function esc(s){ return String(s == null ? "" : s).replace(/[&<>"]/g, function(c){
     return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]; }); }
+  function todayISO(){
+    var d = new Date();
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") +
+           "-" + String(d.getDate()).padStart(2, "0");
+  }
   function mins(t){ var p = String(t || "").split(":"); return (+p[0] || 0) * 60 + (+p[1] || 0); }
   function fmtDay(iso){
     var d = new Date(iso + "T00:00:00");
@@ -171,14 +182,23 @@
 
   function card(p, i){
     var isOpen = !!open[p.name];
-    var stripe = (p.problems || p.below_target) ? "var(--bad)"
-               : (p.sales.length ? "var(--ok)" : "var(--warn)");
-    var badge = p.is_rep ? '<span class="badge rep">visits</span>'
-              : (p.below_target
-                 ? '<span class="badge">' + (p.effective_units != null ? p.effective_units : p.units) +
-                   '/' + p.target + '</span>' : '');
+    var lvl = (p.band || {}).level;
+    var stripe = lvl === "great" ? "var(--accent)" : lvl === "ok" ? "var(--ok)"
+               : lvl === "bad" ? "var(--bad)" : "var(--idle)";
+    var badge = "";
     if (p.wrote_wrong) badge += '<span class="badge wrote">wrote ' + p.wrote_wrong + ' wrong</span>';
     if (p.needs_check) badge += '<span class="badge check">' + p.needs_check + ' to verify</span>';
+
+    // The verdict is words, not just a colour - a supervisor should not have to decode a stripe.
+    // While the day is still running it says "so far", so nobody is chased at 10am for a figure
+    // that has all afternoon to change.
+    var b = p.band || {};
+    var sofar = (cur === todayISO() && !b.level === false && b.level !== "none") ? " so far" : "";
+    var bandLine = b.label
+      ? '<span class="band ' + esc(b.level || "") + '">' + esc(b.label) + sofar +
+        ' · ' + (p.effective_units != null ? p.effective_units : p.units) + ' units' +
+        (b.note ? ' <small>— ' + esc(b.note) + '</small>' : '') + '</span>'
+      : "";
     var sales = p.sales.map(function(s){
       var parsed = (s.claimed || []).map(function(c){ return c.qty + " × " + c.product; })
                    .join(", ") || "nothing countable";
@@ -221,7 +241,7 @@
       '" style="--stripe:' + stripe + ';--i:' + i + '">' +
       '<button class="head" type="button" data-t="' + esc(p.name) + '" aria-expanded="' + isOpen + '">' +
       '<span class="who"><b>' + esc(p.name) + badge + '</b><span>' + esc(p.site || "—") +
-      ' · ' + esc(p.first) + '–' + esc(p.last) + '</span></span>' +
+      ' · ' + esc(p.first) + '–' + esc(p.last) + '</span>' + bandLine + '</span>' +
       '<span class="nums">' +
       '<span class="num"><b>' + p.check_count + '</b><span>checks</span></span>' +
       '<span class="num"><b>' + p.units + '</b><span>units</span></span>' +
