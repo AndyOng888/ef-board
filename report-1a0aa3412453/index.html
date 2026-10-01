@@ -94,6 +94,10 @@
   .sbody{flex:1;min-width:0;}
   .parsed{font-size:13px;font-weight:600;}
   .said{font-size:12.5px;color:var(--ink-soft);font-style:italic;word-break:break-word;}
+  .badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px;
+         margin-left:7px;vertical-align:middle;text-transform:uppercase;letter-spacing:.02em;
+         background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad);}
+  .badge.rep{background:color-mix(in srgb,var(--idle) 18%,transparent);color:var(--ink-soft);}
   .verdict{flex:0 0 auto;font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px;
            text-transform:uppercase;white-space:nowrap;}
   .v-pending{background:color-mix(in srgb,var(--idle) 18%,transparent);color:var(--ink-soft);}
@@ -161,7 +165,11 @@
 
   function card(p, i){
     var isOpen = !!open[p.name];
-    var stripe = p.problems ? "var(--bad)" : (p.sales.length ? "var(--ok)" : "var(--warn)");
+    var stripe = (p.problems || p.below_target) ? "var(--bad)"
+               : (p.sales.length ? "var(--ok)" : "var(--warn)");
+    var badge = p.is_rep ? '<span class="badge rep">visits</span>'
+              : (p.below_target
+                 ? '<span class="badge">' + p.units + '/' + p.target + '</span>' : '');
     var sales = p.sales.map(function(s){
       var parsed = (s.claimed || []).map(function(c){ return c.qty + " × " + c.product; })
                    .join(", ") || "nothing countable";
@@ -181,7 +189,7 @@
     return '<article class="card' + (isOpen ? " open" : "") +
       '" style="--stripe:' + stripe + ';--i:' + i + '">' +
       '<button class="head" type="button" data-t="' + esc(p.name) + '" aria-expanded="' + isOpen + '">' +
-      '<span class="who"><b>' + esc(p.name) + '</b><span>' + esc(p.site || "—") +
+      '<span class="who"><b>' + esc(p.name) + badge + '</b><span>' + esc(p.site || "—") +
       ' · ' + esc(p.first) + '–' + esc(p.last) + '</span></span>' +
       '<span class="nums">' +
       '<span class="num"><b>' + p.check_count + '</b><span>checks</span></span>' +
@@ -210,8 +218,8 @@
       ['<b>' + (t.people || 0) + '</b><span>worked</span>', ''],
       ['<b>' + (t.hourly_checks || 0) + '</b><span>hourly checks</span>', ''],
       ['<b>' + (t.claimed_units || 0) + '</b><span>units</span>', ''],
-      ['<b>' + ((t.pending || 0) + (t.problems || 0)) + '</b><span>to check</span>',
-       (t.problems ? 'bad' : '')]
+      ['<b>' + (t.below_target || 0) + '</b><span>below target</span>',
+       (t.below_target ? 'bad' : '')]
     ].map(function(s){ return '<div class="stat ' + s[1] + '">' + s[0] + '</div>'; }).join("");
 
     // group by Malaysian state, built from whoever actually worked that day
@@ -242,8 +250,10 @@
     elList.innerHTML = warn + show.map(function(a){
       var ppl = byArea[a].slice().sort(function(x, y){ return (y.units || 0) - (x.units || 0); });
       var units = ppl.reduce(function(sum, p){ return sum + (p.units || 0); }, 0);
+      var short = ppl.filter(function(p){ return p.below_target; }).length;
       return '<div class="state-h"><h2>' + esc(a) + '</h2><span>' + ppl.length +
-             (ppl.length === 1 ? ' promoter' : ' promoters') + ' · ' + units + ' units</span>' +
+             (ppl.length === 1 ? ' promoter' : ' promoters') + ' · ' + units + ' units' +
+             (short ? ' · ' + short + ' below target' : '') + '</span>' +
              '<i></i></div><div class="list">' +
              ppl.map(function(p){ return card(p, i++); }).join("") + '</div>';
     }).join("");
