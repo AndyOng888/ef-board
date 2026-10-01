@@ -149,7 +149,7 @@
 (function(){
   "use strict";
   var days = [], cur = "", area = "all", open = {}, generated = "", loading = false;
-  var PAGE_VERSION = "86aa4206ad";   // stamped at build time
+  var PAGE_VERSION = "1e5182ac09";   // stamped at build time
   var elList = document.getElementById("list"), elStats = document.getElementById("stats"),
       elDay = document.getElementById("day"), elAreas = document.getElementById("areas"),
       elStamp = document.getElementById("stamp"), elRefresh = document.getElementById("refresh");
@@ -196,6 +196,14 @@
     // that has all afternoon to change.
     var b = p.band || {};
     var sofar = (cur === todayISO() && b.level && b.level !== "none") ? " so far" : "";
+    // The 6+ units/day doubling: say the base figure too, so the promoter can be shown how
+    // the number was reached rather than being asked to trust it.
+    var bon = p.bonus && p.bonus.applied ? p.bonus : null;
+    var bonusLine = bon
+      ? '<span class="band great">' + esc(bon.label) + ' · RM' +
+        Number(bon.base).toFixed(2) + ' × ' + bon.multiplier + ' = RM' +
+        Number(bon.payable).toFixed(2) + '</span>'
+      : "";
     var bandLine = b.label
       ? '<span class="band ' + esc(b.level || "") + '">' + esc(b.label) + sofar +
         ' · ' + (p.effective_units != null ? p.effective_units : p.units) + ' units' +
@@ -243,11 +251,12 @@
       '" style="--stripe:' + stripe + ';--i:' + i + '">' +
       '<button class="head" type="button" data-t="' + esc(p.name) + '" aria-expanded="' + isOpen + '">' +
       '<span class="who"><b>' + esc(p.name) + badge + '</b><span>' + esc(p.site || "—") +
-      ' · ' + esc(p.first) + '–' + esc(p.last) + '</span>' + bandLine + '</span>' +
+      ' · ' + esc(p.first) + '–' + esc(p.last) + '</span>' + bandLine + bonusLine + '</span>' +
       '<span class="nums">' +
       '<span class="num"><b>' + p.check_count + '</b><span>checks</span></span>' +
       '<span class="num"><b>' + p.units + '</b><span>units</span></span>' +
-      '<span class="num"><b>RM' + Number(p.commission).toFixed(2) + '</b><span>unit comm.</span></span>' +
+      '<span class="num"><b>RM' + Number(p.commission).toFixed(2) + '</b><span>' +
+        (bon ? 'unit comm. ×2' : 'unit comm.') + '</span></span>' +
       '</span><svg class="chev" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">' +
       '<path d="M5 3l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" ' +
       'stroke-linecap="round" stroke-linejoin="round"/></svg></button>' +
