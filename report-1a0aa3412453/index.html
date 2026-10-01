@@ -142,13 +142,14 @@
   </header>
   <main id="list"></main>
   <p class="note">Customer names and phone numbers are removed from this report.<br>
+     Commission shown is <b>unit commission only</b> &mdash; it is not take-home pay and excludes daily basic and any monthly incentive.<br>
      <span id="stamp">Loading&hellip;</span></p>
 </div>
 <script>
 (function(){
   "use strict";
   var days = [], cur = "", area = "all", open = {}, generated = "", loading = false;
-  var PAGE_VERSION = "0a3aea9f2a";   // stamped at build time
+  var PAGE_VERSION = "86aa4206ad";   // stamped at build time
   var elList = document.getElementById("list"), elStats = document.getElementById("stats"),
       elDay = document.getElementById("day"), elAreas = document.getElementById("areas"),
       elStamp = document.getElementById("stamp"), elRefresh = document.getElementById("refresh");
@@ -246,7 +247,7 @@
       '<span class="nums">' +
       '<span class="num"><b>' + p.check_count + '</b><span>checks</span></span>' +
       '<span class="num"><b>' + p.units + '</b><span>units</span></span>' +
-      '<span class="num"><b>RM' + Number(p.commission).toFixed(2) + '</b><span>claimed</span></span>' +
+      '<span class="num"><b>RM' + Number(p.commission).toFixed(2) + '</b><span>unit comm.</span></span>' +
       '</span><svg class="chev" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">' +
       '<path d="M5 3l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" ' +
       'stroke-linecap="round" stroke-linejoin="round"/></svg></button>' +
