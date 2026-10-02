@@ -148,8 +148,9 @@
 <script>
 (function(){
   "use strict";
-  var days = [], cur = "", area = "all", open = {}, generated = "", loading = false;
-  var PAGE_VERSION = "1e5182ac09";   // stamped at build time
+  var days = [], cur = "", area = "all", open = {}, generated = "", checked = "",
+      loading = false;
+  var PAGE_VERSION = "6ab06a77d9";   // stamped at build time
   var elList = document.getElementById("list"), elStats = document.getElementById("stats"),
       elDay = document.getElementById("day"), elAreas = document.getElementById("areas"),
       elStamp = document.getElementById("stamp"), elRefresh = document.getElementById("refresh");
@@ -341,11 +342,22 @@
         }
         days = payload.days || [];
         generated = payload.generated || "";
+        checked = payload.checked || "";
         var found = false;
         for (var k = 0; k < days.length; k++) if (days[k].date === cur) found = true;
         if (!found) cur = days.length ? days[0].date : "";
         render();
-        elStamp.textContent = generated ? ("Data from " + generated) : "";
+        // Show BOTH: when the figures last changed, and when we last looked. With only the
+        // first, a quiet evening read exactly like a dead scraper - 21:16 still showing at 22:03
+        // although the 21:30, 21:45 and 22:00 checks had all run and found nothing new.
+        if (generated && checked && checked !== generated) {
+          elStamp.textContent = "Data from " + generated +
+            " · last checked " + checked + " — nothing new since";
+        } else if (generated) {
+          elStamp.textContent = "Data from " + generated;
+        } else {
+          elStamp.textContent = "";
+        }
       })
       .catch(function(){
         if (!days.length) elList.innerHTML =
