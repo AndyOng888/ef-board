@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Clock-in Demo</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#fff; --ink:#15181d; --soft:#5f6773; --line:#e3e6ea;
+    --accent:#0f7b5f; --warn:#8a5a00; --bad:#b3261e; --ok:#0f7b5f; --demo:#6b4ea8;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#111418; --card:#191d22; --ink:#eceef1; --soft:#9aa3ad; --line:#272c33;
+      --accent:#49c39b; --warn:#e0a63c; --bad:#f2857c; --ok:#49c39b; --demo:#b49bea;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#111418; --card:#191d22; --ink:#eceef1; --soft:#9aa3ad; --line:#272c33;
+    --accent:#49c39b; --warn:#e0a63c; --bad:#f2857c; --ok:#49c39b; --demo:#b49bea;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);min-height:100vh;padding:16px;
+       font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}
+  .wrap{max-width:460px;margin:0 auto;}
+  .banner{background:color-mix(in srgb,var(--demo) 14%,transparent);color:var(--demo);
+          border:1px solid color-mix(in srgb,var(--demo) 35%,transparent);border-radius:12px;
+          padding:12px 14px;font-size:13px;margin-bottom:14px;line-height:1.5;}
+  .banner b{display:block;font-size:13.5px;margin-bottom:3px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;
+        padding:20px;margin-bottom:14px;}
+  h1{font-size:19px;margin:0 0 2px;letter-spacing:-.01em;}
+  .site{color:var(--soft);font-size:13.5px;}
+  label{display:block;font-size:12px;font-weight:700;letter-spacing:.06em;
+        text-transform:uppercase;color:var(--soft);margin:15px 0 6px;}
+  input,select{width:100%;padding:12px 13px;font-size:16px;border:1px solid var(--line);
+               border-radius:10px;background:var(--bg);color:var(--ink);}
+  button{width:100%;margin-top:18px;padding:16px;font-size:18px;font-weight:700;border:0;
+         border-radius:12px;background:var(--accent);color:#fff;min-height:54px;}
+  button.out{background:#5a6472;}
+  button.ghost{background:transparent;color:var(--soft);border:1px solid var(--line);
+               font-size:14px;padding:11px;min-height:44px;margin-top:10px;}
+  button:disabled{opacity:.55;}
+  .clock{font-size:34px;font-weight:700;font-variant-numeric:tabular-nums;margin:12px 0 0;}
+  .clocklbl{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--soft);}
+  .note{font-size:12.5px;color:var(--soft);margin-top:8px;}
+  .msg{margin-top:14px;font-size:14px;padding:11px 13px;border-radius:10px;display:none;}
+  .msg.ok{display:block;background:color-mix(in srgb,var(--ok) 12%,transparent);color:var(--ok);}
+  .msg.bad{display:block;background:color-mix(in srgb,var(--bad) 12%,transparent);color:var(--bad);}
+  .flags{margin:12px 0 0;padding-left:18px;font-size:13.5px;color:var(--warn);}
+  .flags li{margin:4px 0;}
+  .row{display:flex;justify-content:space-between;gap:10px;font-size:14px;padding:8px 0;
+       border-bottom:1px solid var(--line);}
+  .row:last-child{border-bottom:0;}
+  .row b{font-variant-numeric:tabular-nums;white-space:nowrap;}
+  .pill{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;
+        letter-spacing:.05em;padding:2px 7px;border-radius:999px;margin-left:5px;
+        background:color-mix(in srgb,var(--warn) 16%,transparent);color:var(--warn);}
+  h2{font-size:12.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--soft);
+     margin:0 0 10px;}
+  .dist{font-size:28px;font-weight:700;font-variant-numeric:tabular-nums;}
+  .dist.in{color:var(--ok);} .dist.out{color:var(--bad);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="banner">
+    <b>Demo — nothing here is real</b>
+    This page runs entirely in your browser. No server, no account, nothing is sent anywhere and
+    nothing is saved except on this phone. <b style="display:inline">Do not type a real password or
+    PIN.</b> The PIN below is already filled in for you.
+  </div>
+
+  <div class="card" id="loginCard">
+    <h1>EF Store — clock in</h1>
+    <div class="site">Sign in (demo)</div>
+    <label for="who">You are</label>
+    <select id="who"></select>
+    <label for="pin">Demo PIN</label>
+    <input id="pin" value="123456" inputmode="numeric" maxlength="6">
+    <label for="site">Outlet</label>
+    <select id="site"></select>
+    <button id="signin">Sign in</button>
+    <p class="note">Real outlets and real coordinates, taken from where promoters actually
+      clocked in. So the distance below is genuine — stand in an outlet and it should read a few
+      metres.</p>
+  </div>
+
+  <div class="card" id="clockCard" style="display:none">
+    <h1 id="name">—</h1>
+    <div class="site" id="siteName"></div>
+    <div class="clock" id="clock">--:--</div>
+    <div class="clocklbl">This phone's clock — the real app uses the server's</div>
+
+    <label>Distance to the outlet</label>
+    <div class="dist" id="dist">—</div>
+    <div class="note" id="geo">Getting your location…</div>
+
+    <label for="qr">Outlet code <span style="text-transform:none;font-weight:400">(printed card at the counter)</span></label>
+    <input id="qr" placeholder="Leave empty to see the warning">
+
+    <button id="go">Clock in</button>
+    <button class="ghost" id="offline">Pretend I have no signal, then clock in</button>
+    <div class="msg" id="msg"></div>
+    <ul class="flags" id="flags"></ul>
+    <button class="ghost" id="reset">Sign out and clear this demo</button>
+  </div>
+
+  <div class="card" id="todayCard" style="display:none">
+    <h2>Today</h2>
+    <div id="today"><div class="note">Nothing yet.</div></div>
+  </div>
+
+  <div class="card">
+    <h2>What this demo cannot show</h2>
+    <p class="note" style="margin-top:0">
+      The real app stamps every punch with the <b>server's</b> time, so a phone with a wrong clock
+      cannot back-date a shift. A page like this has no server, so the time above is your phone's
+      and that protection can only be seen on the real build. Same for the PIN: here it is checked
+      in the browser, which proves nothing — the real one is PBKDF2-hashed on the server with a
+      lockout after five wrong tries.
+    </p>
+  </div>
+</div>
+
+<script>
+// Real outlets with coordinates derived from the median of actual TimeTec punches, so the geofence
+// maths below is exercised against real positions rather than invented ones.
+var SITES = [{"name": "Village Grocer Southkey", "lat": 1.502353, "lng": 103.7760766, "r": 190}, {"name": "Adventish Hospital", "lat": 5.4319696, "lng": 100.3050831, "r": 150}, {"name": "Jaya Grocer Eco Galleria", "lat": 1.4404557, "lng": 103.6164064, "r": 150}, {"name": "Mr Saw House", "lat": 4.5537721, "lng": 101.11449, "r": 150}, {"name": "Vcare Pharmacy Butterworth", "lat": 5.4353458, "lng": 100.3883077, "r": 150}, {"name": "Village Grocer Paradigm Mall", "lat": 1.5146013, "lng": 103.686175, "r": 233}, {"name": "Pasar Mini dan Kedai Ubat E Coins", "lat": 4.5429476, "lng": 101.0834168, "r": 150}, {"name": "Kedai Ubat Wan Fook Tong", "lat": 4.5623371, "lng": 101.0773696, "r": 150}, {"name": "Qualipharm Health Store", "lat": 4.5731548, "lng": 101.1176828, "r": 150}, {"name": "Kedai Ubat Kean Sang Woh", "lat": 4.586701, "lng": 101.1307627, "r": 150}, {"name": "Ai Sim Enterprise", "lat": 4.6139396, "lng": 101.1256757, "r": 150}, {"name": "59, Jalan Melawati 1, Taman Melawati, 81300, Johor Bahru, Johor Darul Ta'zim, 马来西亚", "lat": 1.4916267, "lng": 103.6228992, "r": 150}, {"name": "Kedai Ubat Wing Heng", "lat": 4.4539433, "lng": 101.1594667, "r": 150}, {"name": "Thye Feong Enterprise", "lat": 4.324765, "lng": 101.1402283, "r": 150}, {"name": "Pharmalink Pharmacy (Gopeng)", "lat": 4.4731026, "lng": 101.1658496, "r": 150}, {"name": "Beras Uti", "lat": 4.5778216, "lng": 101.122901, "r": 150}, {"name": "Waikom Ent", "lat": 4.576491, "lng": 101.1237873, "r": 150}];
+var PEOPLE = ["Demo Promoter", "Demo Sales Rep", "Demo Supervisor"];
+var KEY = "efs_demo_state_v1";
+
+var S = load() || {signedIn:false, who:null, siteIdx:0, punches:[]};
+var pos = null, geoMsg = "Getting your location…", nextOffline = false;
+
+function load(){ try { return JSON.parse(localStorage.getItem(KEY) || "null"); } catch(e){ return null; } }
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){} }
+
+function el(id){ return document.getElementById(id); }
+
+// Haversine, the same calculation the server does. Running it here is what lets the demo report a
+// genuine distance from wherever you are standing.
+function distM(a, b, c, d){
+  if ([a,b,c,d].some(function(x){ return x === null || x === undefined; })) return null;
+  var R = 6371000, p1 = a*Math.PI/180, p2 = c*Math.PI/180;
+  var dp = p2 - p1, dl = (d - b)*Math.PI/180;
+  var h = Math.sin(dp/2)*Math.sin(dp/2) + Math.cos(p1)*Math.cos(p2)*Math.sin(dl/2)*Math.sin(dl/2);
+  return Math.round(2*R*Math.asin(Math.sqrt(h)));
+}
+
+function site(){ return SITES[S.siteIdx] || SITES[0]; }
+
+function fillSelects(){
+  el("who").innerHTML = PEOPLE.map(function(p,i){
+    return '<option value="'+i+'">'+p+'</option>'; }).join("");
+  el("site").innerHTML = SITES.map(function(s,i){
+    return '<option value="'+i+'">'+s.name+'</option>'; }).join("");
+}
+
+function watchGeo(){
+  if (!navigator.geolocation){
+    geoMsg = "This phone gives no location. In the real app the punch still counts and is flagged.";
+    paint(); return;
+  }
+  navigator.geolocation.watchPosition(function(p){
+    pos = p;
+    geoMsg = "Location accurate to about " + Math.round(p.coords.accuracy) + " m.";
+    paint();
+  }, function(e){
+    geoMsg = "No location — " + (e.message || "permission refused") +
+             ". In the real app the punch still counts and is flagged.";
+    paint();
+  }, {enableHighAccuracy:true, timeout:15000, maximumAge:10000});
+}
+
+function nextKind(){
+  var last = S.punches[S.punches.length-1];
+  return (last && last.kind === "in") ? "out" : "in";
+}
+
+function punch(offline){
+  var s = site();
+  var d = pos ? distM(pos.coords.latitude, pos.coords.longitude, s.lat, s.lng) : null;
+  var flags = [];
+  if (d === null) flags.push("no location given — the phone refused or has GPS off");
+  else if (d > s.r) flags.push(d + " m from the outlet (allowed " + s.r + " m)");
+  if (pos && pos.coords.accuracy > 100)
+    flags.push("weak GPS fix, accurate to about " + Math.round(pos.coords.accuracy) + " m");
+  var code = el("qr").value.trim();
+  if (!code) flags.push("no outlet code presented — location alone is easy to fake");
+  if (offline) flags.push("recorded with no signal and synced later");
+
+  var now = new Date();
+  S.punches.push({kind: nextKind(), at: now.toISOString(), dist: d,
+                  flags: flags, offline: !!offline});
+  save();
+
+  var m = el("msg");
+  m.className = "msg ok";
+  m.textContent = (S.punches[S.punches.length-1].kind === "in" ? "Clocked in at " : "Clocked out at ")
+                + pad(now.getHours()) + ":" + pad(now.getMinutes())
+                + (d !== null ? " · " + d + " m from the outlet" : "")
+                + (offline ? " (saved on the phone)" : "");
+  el("qr").value = "";
+  paint();
+}
+
+function pad(n){ return ("0"+n).slice(-2); }
+
+function paint(){
+  el("loginCard").style.display = S.signedIn ? "none" : "block";
+  el("clockCard").style.display = S.signedIn ? "block" : "none";
+  el("todayCard").style.display = S.signedIn ? "block" : "none";
+  if (!S.signedIn) return;
+
+  var s = site();
+  el("name").textContent = PEOPLE[S.who] || "Demo";
+  el("siteName").textContent = s.name;
+  el("geo").textContent = geoMsg;
+
+  var d = pos ? distM(pos.coords.latitude, pos.coords.longitude, s.lat, s.lng) : null;
+  var dd = el("dist");
+  if (d === null){ dd.textContent = "—"; dd.className = "dist"; }
+  else {
+    dd.textContent = d + " m";
+    dd.className = "dist " + (d <= s.r ? "in" : "out");
+  }
+
+  el("go").textContent = nextKind() === "in" ? "Clock in" : "Clock out";
+  el("go").className = nextKind() === "out" ? "out" : "";
+
+  var f = el("flags"); f.innerHTML = "";
+  var last = S.punches[S.punches.length-1];
+  if (last) last.flags.forEach(function(t){
+    var li = document.createElement("li"); li.textContent = t; f.appendChild(li); });
+
+  el("today").innerHTML = S.punches.length ? S.punches.map(function(p){
+    var t = new Date(p.at);
+    return '<div class="row"><span>' + (p.kind === "in" ? "Clocked in" : "Clocked out")
+         + (p.offline ? '<span class="pill">synced late</span>' : '')
+         + (p.flags.length ? '<span class="pill">' + p.flags.length + ' flag'
+              + (p.flags.length>1?'s':'') + '</span>' : '')
+         + '</span><b>' + pad(t.getHours()) + ":" + pad(t.getMinutes()) + '</b></div>';
+  }).join("") : '<div class="note">Nothing yet.</div>';
+}
+
+function tick(){
+  var n = new Date();
+  el("clock").textContent = pad(n.getHours()) + ":" + pad(n.getMinutes());
+}
+
+el("signin").addEventListener("click", function(){
+  S.signedIn = true;
+  S.who = parseInt(el("who").value, 10) || 0;
+  S.siteIdx = parseInt(el("site").value, 10) || 0;
+  save(); paint();
+});
+el("go").addEventListener("click", function(){ punch(nextOffline); nextOffline = false; });
+el("offline").addEventListener("click", function(){ punch(true); });
+el("reset").addEventListener("click", function(){
+  S = {signedIn:false, who:null, siteIdx:0, punches:[]};
+  save(); el("msg").className = "msg"; paint();
+});
+
+fillSelects();
+if (S.signedIn){ el("who").value = S.who || 0; el("site").value = S.siteIdx || 0; }
+watchGeo(); paint(); tick(); setInterval(tick, 1000);
+</script>
+</body>
+</html>
