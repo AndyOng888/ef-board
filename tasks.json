@@ -1,11 +1,11 @@
 {
-  "generated": "02 Oct 2026, 10:32",
+  "generated": "02 Oct 2026, 13:41",
   "tasks": [
     {
       "uid": "EFS-013",
       "title": "In-house promoter reporting + GPS attendance (replace TimeTec)",
       "status": "active",
-      "next": "Running unattended: 15-min scrapes, nightly verification, receipt is authoritative, worded performance bands, state grouping. Commission settled 2 Oct: rates + 6-unit doubling live from commission.json. Silent-failure fixes 2 Oct: a TimeTec logout no longer reads as an empty day. Next: outlet GPS list, then our own clock-in - that is what ends the TimeTec bill",
+      "next": "Running unattended: 15-min scrapes, nightly verification, receipt is authoritative, worded performance bands, state grouping. Commission settled 2 Oct: rates + 6-unit doubling live from commission.json. Silent-failure fixes 2 Oct: a logout no longer reads as an empty day, and receipts are no longer saved against the WRONG sale (off by one row - all verification before 2 Oct is void, 1 Oct re-verifying tonight). Next: check tonight's 23:00 re-verification, then the outlet GPS list and our own clock-in - that is what ends the TimeTec bill",
       "files": "promoter-system/",
       "done": 0,
       "total": 0
