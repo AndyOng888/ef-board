@@ -115,6 +115,7 @@
   .band.great{color:var(--accent);}
   .band.none{color:var(--ink-soft);}
   .badge.wrote{background:color-mix(in srgb,var(--warn) 16%,transparent);color:var(--warn);}
+  .badge.nosale{background:color-mix(in srgb,var(--warn) 16%,transparent);color:var(--warn);}
   .flag{font-size:11.5px;color:var(--bad);margin-top:3px;}
   .chipsmall{display:flex;flex-wrap:wrap;gap:5px;}
   .tag{font-size:11px;padding:3px 8px;border-radius:6px;background:var(--surface-2);
@@ -150,7 +151,7 @@
   "use strict";
   var days = [], cur = "", area = "all", open = {}, generated = "", checked = "",
       loading = false;
-  var PAGE_VERSION = "6ab06a77d9";   // stamped at build time
+  var PAGE_VERSION = "13722823a7";   // stamped at build time
   var elList = document.getElementById("list"), elStats = document.getElementById("stats"),
       elDay = document.getElementById("day"), elAreas = document.getElementById("areas"),
       elStamp = document.getElementById("stamp"), elRefresh = document.getElementById("refresh");
@@ -191,6 +192,12 @@
     var badge = "";
     if (p.wrote_wrong) badge += '<span class="badge wrote">wrote ' + p.wrote_wrong + ' wrong</span>';
     if (p.needs_check) badge += '<span class="badge check">' + p.needs_check + ' to verify</span>';
+    // A shift's worth of hourly checks and not one sale. Usually a quiet day; occasionally the
+    // board has LOST the sales, which is exactly what happened on 3 Oct 2026 and was only caught
+    // because someone asked about that outlet by name.
+    if (p.worked_no_sales) badge += '<span class="badge nosale" title="On shift and logging ' +
+      'hourly checks, but no sale recorded. Worth a look - either a quiet day or sales that did ' +
+      'not reach the board.">worked, no sales</span>';
 
     // The verdict is words, not just a colour - a supervisor should not have to decode a stripe.
     // While the day is still running it says "so far", so nobody is chased at 10am for a figure
