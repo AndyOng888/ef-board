@@ -12,7 +12,7 @@ import json
 import re
 from pathlib import Path
 
-SRC = Path(r"C:/Users/Andy/video-tools/TASKS.md")
+SRC = Path(r"C:/Users/User/video-tools/TASKS.md")
 OUT = Path(__file__).parent / "tasks.json"
 
 STATUS = {
