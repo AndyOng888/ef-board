@@ -1,10 +1,14 @@
 """Regenerate tasks.json for the public board from video-tools/TASKS.md.
 
-    python build.py        -> writes tasks.json
+    python build.py        -> writes tasks.json, ONLY if a task changed
     git add -A && git commit -m "board update" && git push
 
 The board reads tasks.json only. There is no Google Sheet involved any more:
 the task board in TASKS.md is the single source, and Claude updates it on request.
+
+promoter-system/run_daily.ps1 runs this on every board run (since 7 Oct 2026), so it
+must not touch tasks.json when nothing changed: a fresh "generated" stamp alone would
+make a commit every 15 minutes. "generated" therefore means when the tasks last changed.
 """
 import datetime
 import io
@@ -65,6 +69,14 @@ def main():
         })
 
     tasks.sort(key=lambda t: (ORDER.get(t["status"], 9), t["uid"]))
+    try:
+        old = json.loads(io.open(OUT, encoding="utf-8").read())
+    except (OSError, ValueError):
+        old = None
+    if old and old.get("tasks") == tasks:
+        print("tasks unchanged ({} tasks, generated {}) - tasks.json left alone".format(
+            len(tasks), old.get("generated", "?")))
+        return
     stamp = datetime.datetime.now().strftime("%d %b %Y, %H:%M")
     payload = {"generated": stamp, "tasks": tasks}
     io.open(OUT, "w", encoding="utf-8").write(
