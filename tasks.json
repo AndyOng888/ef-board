@@ -1,5 +1,5 @@
 {
-  "generated": "02 Oct 2026, 13:41",
+  "generated": "07 Oct 2026, 19:56",
   "tasks": [
     {
       "uid": "EFS-013",
@@ -21,7 +21,7 @@
     },
     {
       "uid": "EFS-008",
-      "title": "Local AI setup on the 5060 Ti PC",
+      "title": "Local AI setup on the RTX 2080 PC (8 GB)",
       "status": "waiting",
       "next": "Plan written. Next: PC back from maintenance → install Claude Code there → tell me",
       "files": "LOCAL-AI-SETUP-PACK.md",
