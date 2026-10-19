@@ -1,48 +1,66 @@
 {
-  "generated": "07 Oct 2026, 19:56",
+  "generated": "19 Oct 2026, 19:12",
   "tasks": [
     {
-      "uid": "EFS-013",
-      "title": "In-house promoter reporting + GPS attendance (replace TimeTec)",
-      "status": "active",
-      "next": "Running unattended: 15-min scrapes, nightly verification, receipt is authoritative, worded performance bands, state grouping. Commission settled 2 Oct: rates + 6-unit doubling live from commission.json. Silent-failure fixes 2 Oct: a logout no longer reads as an empty day, and receipts are no longer saved against the WRONG sale (off by one row - all verification before 2 Oct is void, 1 Oct re-verifying tonight). Next: check tonight's 23:00 re-verification, then the outlet GPS list and our own clock-in - that is what ends the TimeTec bill",
-      "files": "promoter-system/",
-      "done": 0,
-      "total": 0
-    },
-    {
       "uid": "EFS-007",
-      "title": "AI presenters (Mei, Aina, Chef Wei)",
-      "status": "waiting",
-      "next": "Character bibles + prompts + scripts written. Next: you generate Mei's base portrait",
-      "files": "ai-presenters/",
+      "title": "AI presenters: Mei, Aina + a senior (new, from the 2026 brand vision)",
+      "status": "active",
+      "next": "19 Oct: owner chose Mei (Chinese-Malaysian), Aina (Malay mum) and a senior uncle/auntie, with MoMo. Image tools install on the desktop RTX 2080 tonight; next: 4-6 face options each for the owner to pick",
+      "files": "C:/Users/User/ai-studio",
       "done": 0,
       "total": 0
     },
     {
-      "uid": "EFS-008",
-      "title": "Local AI setup on the RTX 2080 PC (8 GB)",
-      "status": "waiting",
-      "next": "Plan written. Next: PC back from maintenance → install Claude Code there → tell me",
-      "files": "LOCAL-AI-SETUP-PACK.md",
+      "uid": "EFS-013",
+      "title": "In-house promoter reporting + attendance app (replace TimeTec)",
+      "status": "active",
+      "next": "App live at attendance.xiaohealthy.com. Receipts checked by the free reader on the office server (since 18 Oct); flagged sales not approved in 1 day alert admins/HR. Admin/HR move the remaining staff themselves; TimeTec not renewed after 31 Dec 2026; TimeTec jobs stop once everyone has moved",
+      "files": "efs-attendance/",
       "done": 0,
       "total": 0
     },
     {
-      "uid": "EFS-011",
-      "title": "Fix disease claims in Shopee listings",
-      "status": "waiting",
-      "next": "Peach, blueberry, beancurd, millet, nut butter — see notes below",
-      "files": "",
+      "uid": "EFS-015",
+      "title": "Sales rep Visits tab (shop check-ins, feedback, follow-ups)",
+      "status": "active",
+      "next": "Built and tested 19 Oct; release tonight with the updated staff privacy notice. HR: give each sales rep a home outlet",
+      "files": "efs-attendance/",
       "done": 0,
-      "total": 5
+      "total": 0
     },
     {
       "uid": "EFS-010",
       "title": "Refresh S21 review reel as reviews grow",
-      "status": "idle",
-      "next": "AvoPrep had 4 reviews (5.0★). Re-check listing in ~1 month",
+      "status": "waiting",
+      "next": "19 Oct: no new AvoPrep reviews yet",
       "files": "avoprep/reels2.py id 21",
+      "done": 0,
+      "total": 0
+    },
+    {
+      "uid": "EFS-016",
+      "title": "Social media in-house (owner + Claude)",
+      "status": "waiting",
+      "next": "Outsourced team paused until ~Jan 2027. 8 AvoMilk posts + replies approved; next: connect the AvoMilk Facebook page at the desktop",
+      "files": "community-page/",
+      "done": 0,
+      "total": 0
+    },
+    {
+      "uid": "EFS-017",
+      "title": "NAS staff accounts + access list",
+      "status": "waiting",
+      "next": "Access list proposed 19 Oct (Joel updated by owner); waiting for Leng + Brandon to approve, then the owner creates the accounts",
+      "files": "NAS 19 IT & Systems/Accounts & Access",
+      "done": 0,
+      "total": 0
+    },
+    {
+      "uid": "EFS-018",
+      "title": "Move the websites off the agency",
+      "status": "waiting",
+      "next": "Waiting for the agency to hand over the source code and hosting; HK site may come first, then SG",
+      "files": "",
       "done": 0,
       "total": 0
     },
@@ -110,6 +128,15 @@
       "total": 0
     },
     {
+      "uid": "EFS-008",
+      "title": "Local AI on the RTX 2080 desktop",
+      "status": "done",
+      "next": "The desktop IS the RTX 2080 PC. Ollama + an open-source vision model run on the GPU (~3 s per receipt); crash fixed by the Visual C++ update 19 Oct",
+      "files": "LOCAL-AI-SETUP-PACK.md",
+      "done": 0,
+      "total": 0
+    },
+    {
       "uid": "EFS-009",
       "title": "Malay / Chinese versions of top sellers",
       "status": "done",
@@ -117,6 +144,33 @@
       "files": "fruits/videos-WM/",
       "done": 10,
       "total": 10
+    },
+    {
+      "uid": "EFS-014",
+      "title": "Company second brain (EF Store)",
+      "status": "done",
+      "next": "62 linked pages on the NAS, owner's answers filled in; kept up to date as things change",
+      "files": "NAS 19 IT & Systems/Company Second Brain",
+      "done": 0,
+      "total": 0
+    },
+    {
+      "uid": "EFS-019",
+      "title": "Free video review before posting (DIY Zeely)",
+      "status": "done",
+      "next": "Speech-to-text fixed 19 Oct; send a video + its views to get a review",
+      "files": "transcribe.py",
+      "done": 0,
+      "total": 0
+    },
+    {
+      "uid": "EFS-011",
+      "title": "Disease claims in Shopee listings",
+      "status": "dropped",
+      "next": "19 Oct: owner keeps the listing wording; Claude alerts when a claim may cause trouble. Claude's own videos/captions still avoid disease claims",
+      "files": "",
+      "done": 0,
+      "total": 5
     }
   ]
 }
